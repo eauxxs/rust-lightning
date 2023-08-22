@@ -4102,7 +4102,7 @@ where
 const MAX_ALLOC_SIZE: usize = 64*1024;
 
 impl<'a, 'b, ES: EntropySource, SP: SignerProvider> ReadableArgs<(&'a ES, &'b SP)>
-		for (BlockHash, ChannelMonitor<SP::Signer>) {
+		for (BlockHash, ChannelMonitor<SP::EcdsaSigner>) {
 	fn read<R: io::Read>(reader: &mut R, args: (&'a ES, &'b SP)) -> Result<Self, DecodeError> {
 		macro_rules! unwrap_obj {
 			($key: expr) => {
@@ -4288,7 +4288,7 @@ impl<'a, 'b, ES: EntropySource, SP: SignerProvider> ReadableArgs<(&'a ES, &'b SP
 				return Err(DecodeError::InvalidValue);
 			}
 		}
-		let onchain_tx_handler: OnchainTxHandler<SP::Signer> = ReadableArgs::read(
+		let onchain_tx_handler: OnchainTxHandler<SP::EcdsaSigner> = ReadableArgs::read(
 			reader, (entropy_source, signer_provider, channel_value_satoshis, channel_keys_id)
 		)?;
 
@@ -4486,7 +4486,7 @@ mod tests {
 			assert!(err.contains("ChannelMonitor storage failure")));
 		check_added_monitors!(nodes[1], 2); // After the failure we generate a close-channel monitor update
 		check_closed_broadcast!(nodes[1], true);
-		check_closed_event!(nodes[1], 1, ClosureReason::ProcessingError { err: "ChannelMonitor storage failure".to_string() }, 
+		check_closed_event!(nodes[1], 1, ClosureReason::ProcessingError { err: "ChannelMonitor storage failure".to_string() },
 			[nodes[0].node.get_our_node_id()], 100000);
 
 		// Build a new ChannelMonitorUpdate which contains both the failing commitment tx update

@@ -35,7 +35,7 @@ pub trait KVStorePersister {
 
 /// Trait that handles persisting a [`ChannelManager`], [`NetworkGraph`], and [`WriteableScore`] to disk.
 pub trait Persister<'a, M: Deref, T: Deref, ES: Deref, NS: Deref, SP: Deref, F: Deref, R: Deref, L: Deref, S: WriteableScore<'a>>
-	where M::Target: 'static + chain::Watch<<SP::Target as SignerProvider>::Signer>,
+	where M::Target: 'static + chain::Watch<<SP::Target as SignerProvider>::EcdsaSigner>,
 		T::Target: 'static + BroadcasterInterface,
 		ES::Target: 'static + EntropySource,
 		NS::Target: 'static + NodeSigner,
@@ -55,7 +55,7 @@ pub trait Persister<'a, M: Deref, T: Deref, ES: Deref, NS: Deref, SP: Deref, F: 
 }
 
 impl<'a, A: KVStorePersister, M: Deref, T: Deref, ES: Deref, NS: Deref, SP: Deref, F: Deref, R: Deref, L: Deref, S: WriteableScore<'a>> Persister<'a, M, T, ES, NS, SP, F, R, L, S> for A
-	where M::Target: 'static + chain::Watch<<SP::Target as SignerProvider>::Signer>,
+	where M::Target: 'static + chain::Watch<<SP::Target as SignerProvider>::EcdsaSigner>,
 		T::Target: 'static + BroadcasterInterface,
 		ES::Target: 'static + EntropySource,
 		NS::Target: 'static + NodeSigner,

@@ -60,7 +60,7 @@ impl FilesystemPersister {
 	/// Read `ChannelMonitor`s from disk.
 	pub fn read_channelmonitors<ES: Deref, SP: Deref> (
 		&self, entropy_source: ES, signer_provider: SP
-	) -> std::io::Result<Vec<(BlockHash, ChannelMonitor<<SP::Target as SignerProvider>::Signer>)>>
+	) -> std::io::Result<Vec<(BlockHash, ChannelMonitor<<SP::Target as SignerProvider>::EcdsaSigner>)>>
 		where
 			ES::Target: EntropySource + Sized,
 			SP::Target: SignerProvider + Sized
@@ -104,7 +104,7 @@ impl FilesystemPersister {
 
 			let contents = fs::read(&file.path())?;
 			let mut buffer = Cursor::new(&contents);
-			match <(BlockHash, ChannelMonitor<<SP::Target as SignerProvider>::Signer>)>::read(&mut buffer, (&*entropy_source, &*signer_provider)) {
+			match <(BlockHash, ChannelMonitor<<SP::Target as SignerProvider>::EcdsaSigner>)>::read(&mut buffer, (&*entropy_source, &*signer_provider)) {
 				Ok((blockhash, channel_monitor)) => {
 					if channel_monitor.get_funding_txo().0.txid != txid || channel_monitor.get_funding_txo().0.index != index {
 						return Err(std::io::Error::new(std::io::ErrorKind::InvalidData,

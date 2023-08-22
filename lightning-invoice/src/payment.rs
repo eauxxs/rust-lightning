@@ -37,7 +37,7 @@ pub fn pay_invoice<M: Deref, T: Deref, ES: Deref, NS: Deref, SP: Deref, F: Deref
 	channelmanager: &ChannelManager<M, T, ES, NS, SP, F, R, L>
 ) -> Result<PaymentId, PaymentError>
 where
-		M::Target: chain::Watch<<SP::Target as SignerProvider>::Signer>,
+		M::Target: chain::Watch<<SP::Target as SignerProvider>::EcdsaSigner>,
 		T::Target: BroadcasterInterface,
 		ES::Target: EntropySource,
 		NS::Target: NodeSigner,
@@ -66,7 +66,7 @@ pub fn pay_invoice_with_id<M: Deref, T: Deref, ES: Deref, NS: Deref, SP: Deref, 
 	channelmanager: &ChannelManager<M, T, ES, NS, SP, F, R, L>
 ) -> Result<(), PaymentError>
 where
-		M::Target: chain::Watch<<SP::Target as SignerProvider>::Signer>,
+		M::Target: chain::Watch<<SP::Target as SignerProvider>::EcdsaSigner>,
 		T::Target: BroadcasterInterface,
 		ES::Target: EntropySource,
 		NS::Target: NodeSigner,
@@ -93,7 +93,7 @@ pub fn pay_zero_value_invoice<M: Deref, T: Deref, ES: Deref, NS: Deref, SP: Dere
 	channelmanager: &ChannelManager<M, T, ES, NS, SP, F, R, L>
 ) -> Result<PaymentId, PaymentError>
 where
-		M::Target: chain::Watch<<SP::Target as SignerProvider>::Signer>,
+		M::Target: chain::Watch<<SP::Target as SignerProvider>::EcdsaSigner>,
 		T::Target: BroadcasterInterface,
 		ES::Target: EntropySource,
 		NS::Target: NodeSigner,
@@ -124,7 +124,7 @@ pub fn pay_zero_value_invoice_with_id<M: Deref, T: Deref, ES: Deref, NS: Deref, 
 	channelmanager: &ChannelManager<M, T, ES, NS, SP, F, R, L>
 ) -> Result<(), PaymentError>
 where
-		M::Target: chain::Watch<<SP::Target as SignerProvider>::Signer>,
+		M::Target: chain::Watch<<SP::Target as SignerProvider>::EcdsaSigner>,
 		T::Target: BroadcasterInterface,
 		ES::Target: EntropySource,
 		NS::Target: NodeSigner,
@@ -191,7 +191,7 @@ trait Payer {
 
 impl<M: Deref, T: Deref, ES: Deref, NS: Deref, SP: Deref, F: Deref, R: Deref, L: Deref> Payer for ChannelManager<M, T, ES, NS, SP, F, R, L>
 where
-		M::Target: chain::Watch<<SP::Target as SignerProvider>::Signer>,
+		M::Target: chain::Watch<<SP::Target as SignerProvider>::EcdsaSigner>,
 		T::Target: BroadcasterInterface,
 		ES::Target: EntropySource,
 		NS::Target: NodeSigner,
