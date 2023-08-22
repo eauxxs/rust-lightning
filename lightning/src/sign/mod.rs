@@ -52,6 +52,8 @@ use core::sync::atomic::{AtomicUsize, Ordering};
 use crate::io::{self, Error};
 use crate::ln::features::ChannelTypeFeatures;
 use crate::ln::msgs::{DecodeError, MAX_VALUE_MSAT};
+#[cfg(taproot)]
+use crate::sign::taproot::TaprootChannelSigner;
 use crate::util::atomic_counter::AtomicCounter;
 use crate::util::chacha20::ChaCha20;
 use crate::util::invoice::construct_invoice_preimage;
@@ -670,6 +672,9 @@ pub trait NodeSigner {
 pub trait SignerProvider {
 	/// A type which implements [`WriteableEcdsaChannelSigner`] which will be returned by [`Self::derive_channel_signer`].
 	type EcdsaSigner: WriteableEcdsaChannelSigner;
+	#[cfg(taproot)]
+	/// A type which implements [`TaprootChannelSigner`]
+	type TaprootSigner: TaprootChannelSigner;
 
 	/// Generates a unique `channel_keys_id` that can be used to obtain a [`Self::EcdsaSigner`] through
 	/// [`SignerProvider::derive_channel_signer`]. The `user_channel_id` is provided to allow
@@ -1513,6 +1518,8 @@ impl NodeSigner for KeysManager {
 
 impl SignerProvider for KeysManager {
 	type EcdsaSigner = InMemorySigner;
+	#[cfg(taproot)]
+	type TaprootSigner = InMemorySigner;
 
 	fn generate_channel_keys_id(&self, _inbound: bool, _channel_value_satoshis: u64, user_channel_id: u128) -> [u8; 32] {
 		let child_idx = self.channel_child_index.fetch_add(1, Ordering::AcqRel);
@@ -1632,6 +1639,8 @@ impl NodeSigner for PhantomKeysManager {
 
 impl SignerProvider for PhantomKeysManager {
 	type EcdsaSigner = InMemorySigner;
+	#[cfg(taproot)]
+	type TaprootSigner = InMemorySigner;
 
 	fn generate_channel_keys_id(&self, inbound: bool, channel_value_satoshis: u64, user_channel_id: u128) -> [u8; 32] {
 		self.inner.generate_channel_keys_id(inbound, channel_value_satoshis, user_channel_id)

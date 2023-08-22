@@ -3,6 +3,8 @@
 use bitcoin::blockdata::transaction::Transaction;
 use bitcoin::secp256k1;
 use bitcoin::secp256k1::{PublicKey, schnorr::Signature, Secp256k1, SecretKey};
+#[cfg(taproot)]
+use bitcoin::secp256k1::All;
 
 use musig2::types::{PartialSignature, PublicNonce};
 
@@ -146,4 +148,42 @@ pub trait TaprootChannelSigner: ChannelSigner {
 	) -> Result<Signature, ()>;
 
 	// TODO: sign channel announcement
+}
+
+impl TaprootChannelSigner for super::InMemorySigner {
+	fn generate_local_nonce_pair(&self, secp_ctx: &Secp256k1<All>) -> PublicNonce {
+		todo!()
+	}
+
+	fn partially_sign_counterparty_commitment(&self, commitment_tx: &CommitmentTransaction, preimages: Vec<PaymentPreimage>, secp_ctx: &Secp256k1<All>) -> Result<(PartialSignature, Vec<Signature>), ()> {
+		todo!()
+	}
+
+	fn partially_sign_holder_commitment_and_htlcs(&self, commitment_tx: &HolderCommitmentTransaction, secp_ctx: &Secp256k1<All>) -> Result<(PartialSignature, Vec<Signature>), ()> {
+		todo!()
+	}
+
+	fn sign_justice_revoked_output(&self, justice_tx: &Transaction, input: usize, amount: u64, per_commitment_key: &SecretKey, secp_ctx: &Secp256k1<All>) -> Result<Signature, ()> {
+		todo!()
+	}
+
+	fn sign_justice_revoked_htlc(&self, justice_tx: &Transaction, input: usize, amount: u64, per_commitment_key: &SecretKey, htlc: &HTLCOutputInCommitment, secp_ctx: &Secp256k1<All>) -> Result<Signature, ()> {
+		todo!()
+	}
+
+	fn sign_holder_htlc_transaction(&self, htlc_tx: &Transaction, input: usize, htlc_descriptor: &HTLCDescriptor, secp_ctx: &Secp256k1<All>) -> Result<Signature, ()> {
+		todo!()
+	}
+
+	fn sign_counterparty_htlc_transaction(&self, htlc_tx: &Transaction, input: usize, amount: u64, per_commitment_point: &PublicKey, htlc: &HTLCOutputInCommitment, secp_ctx: &Secp256k1<All>) -> Result<Signature, ()> {
+		todo!()
+	}
+
+	fn partially_sign_closing_transaction(&self, closing_tx: &ClosingTransaction, secp_ctx: &Secp256k1<All>) -> Result<PartialSignature, ()> {
+		todo!()
+	}
+
+	fn sign_holder_anchor_input(&self, anchor_tx: &Transaction, input: usize, secp_ctx: &Secp256k1<All>) -> Result<Signature, ()> {
+		todo!()
+	}
 }
