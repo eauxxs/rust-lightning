@@ -661,7 +661,7 @@ pub(super) struct ChannelContext<SP: Deref> where SP::Target: SignerProvider {
 
 	latest_monitor_update_id: u64,
 
-	holder_signer: ChannelSignerType<<SP::Target as SignerProvider>::EcdsaSigner>,
+	holder_signer: ChannelSignerType<SP>,
 	shutdown_scriptpubkey: Option<ShutdownScript>,
 	destination_script: Script,
 
@@ -3258,7 +3258,9 @@ impl<SP: Deref> Channel<SP> where
 					self.context.cur_counterparty_commitment_transaction_number + 1,
 					&secret
 				).map_err(|_| ChannelError::Close("Failed to validate revocation from peer".to_owned()))?;
-			}
+			},
+			// TODO (taproot|arik)
+			_ => todo!()
 		};
 
 		self.context.commitment_secrets.provide_secret(self.context.cur_counterparty_commitment_transaction_number + 1, msg.per_commitment_secret)
@@ -4149,7 +4151,9 @@ impl<SP: Deref> Channel<SP> where
 						max_fee_satoshis: our_max_fee,
 					}),
 				}), None))
-			}
+			},
+			// TODO (taproot|arik)
+			_ => todo!()
 		}
 	}
 
@@ -4389,7 +4393,9 @@ impl<SP: Deref> Channel<SP> where
 								max_fee_satoshis: our_max_fee,
 							}),
 						}), signed_tx))
-					}
+					},
+					// TODO (taproot|arik)
+					_ => todo!()
 				}
 			}
 		}
@@ -4501,7 +4507,7 @@ impl<SP: Deref> Channel<SP> where
 	}
 
 	#[cfg(test)]
-	pub fn get_signer(&self) -> &ChannelSignerType<<SP::Target as SignerProvider>::EcdsaSigner> {
+	pub fn get_signer(&self) -> &ChannelSignerType<SP> {
 		&self.context.holder_signer
 	}
 
@@ -5002,7 +5008,9 @@ impl<SP: Deref> Channel<SP> where
 					node_signature: our_node_sig,
 					bitcoin_signature: our_bitcoin_sig,
 				})
-			}
+			},
+			// TODO (taproot|arik)
+			_ => todo!()
 		}
 	}
 
@@ -5029,7 +5037,9 @@ impl<SP: Deref> Channel<SP> where
 						bitcoin_signature_2: if were_node_one { their_bitcoin_sig } else { our_bitcoin_sig },
 						contents: announcement,
 					})
-				}
+				},
+				// TODO (taproot|arik)
+				_ => todo!()
 			}
 		} else {
 			Err(ChannelError::Ignore("Attempted to sign channel announcement before we'd received announcement_signatures".to_string()))
@@ -5402,7 +5412,9 @@ impl<SP: Deref> Channel<SP> where
 					#[cfg(taproot)]
 					partial_signature_with_nonce: None,
 				}, (counterparty_commitment_txid, commitment_stats.htlcs_included)))
-			}
+			},
+			// TODO (taproot|arik)
+			_ => todo!()
 		}
 	}
 
@@ -5778,7 +5790,9 @@ impl<SP: Deref> OutboundV1Channel<SP> where SP::Target: SignerProvider {
 			ChannelSignerType::Ecdsa(ecdsa) => {
 				Ok(ecdsa.sign_counterparty_commitment(&counterparty_initial_commitment_tx, Vec::new(), &self.context.secp_ctx)
 					.map_err(|_| ChannelError::Close("Failed to get signatures for new commitment_signed".to_owned()))?.0)
-			}
+			},
+			// TODO (taproot|arik)
+			_ => todo!()
 		}
 	}
 
@@ -6508,6 +6522,8 @@ impl<SP: Deref> InboundV1Channel<SP> where SP::Target: SignerProvider {
 				// We sign "counterparty" commitment transaction, allowing them to broadcast the tx if they wish.
 				Ok((counterparty_initial_commitment_tx, initial_commitment_tx, counterparty_signature))
 			}
+			// TODO (taproot|arik)
+			_ => todo!()
 		}
 	}
 
