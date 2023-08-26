@@ -32,6 +32,8 @@ use crate::util::ser::{Writeable, Writer};
 use crate::io::Error;
 use crate::ln::features::ChannelTypeFeatures;
 #[cfg(taproot)]
+use crate::ln::msgs::PartialSignatureWithNonce;
+#[cfg(taproot)]
 use crate::sign::taproot::TaprootChannelSigner;
 
 /// Initial value for revoked commitment downward counter
@@ -255,7 +257,7 @@ impl TaprootChannelSigner for TestChannelSigner {
 		todo!()
 	}
 
-	fn partially_sign_counterparty_commitment(&self, commitment_tx: &CommitmentTransaction, preimages: Vec<PaymentPreimage>, secp_ctx: &Secp256k1<All>) -> Result<(PartialSignature, Vec<secp256k1::schnorr::Signature>), ()> {
+	fn partially_sign_counterparty_commitment(&self, commitment_tx: &CommitmentTransaction, preimages: Vec<PaymentPreimage>, secp_ctx: &Secp256k1<All>) -> Result<(PartialSignatureWithNonce, Vec<secp256k1::schnorr::Signature>), ()> {
 		todo!()
 	}
 
