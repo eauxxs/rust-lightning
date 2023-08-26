@@ -11,6 +11,7 @@ use musig2::types::{PartialSignature, PublicNonce};
 
 use crate::events::bump_transaction::HTLCDescriptor;
 use crate::ln::chan_utils::{ClosingTransaction, CommitmentTransaction, HolderCommitmentTransaction, HTLCOutputInCommitment};
+use crate::ln::msgs::PartialSignatureWithNonce;
 use crate::ln::PaymentPreimage;
 use crate::sign::ChannelSigner;
 
@@ -40,7 +41,7 @@ pub trait TaprootChannelSigner: ChannelSigner {
 	// TODO: Document the things someone using this interface should enforce before signing.
 	fn partially_sign_counterparty_commitment(&self, commitment_tx: &CommitmentTransaction,
 		preimages: Vec<PaymentPreimage>, secp_ctx: &Secp256k1<secp256k1::All>,
-	) -> Result<(PartialSignature, Vec<Signature>), ()>;
+	) -> Result<(PartialSignatureWithNonce, Vec<Signature>), ()>;
 
 	// TODO: move validate_counterparty_revocation to `ChannelSigner`?
 
