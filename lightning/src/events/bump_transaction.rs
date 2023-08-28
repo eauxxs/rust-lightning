@@ -26,7 +26,8 @@ use crate::ln::chan_utils::{
 use crate::ln::features::ChannelTypeFeatures;
 use crate::ln::PaymentPreimage;
 use crate::prelude::*;
-use crate::sign::{EcdsaChannelSigner, SignerProvider, WriteableEcdsaChannelSigner};
+use crate::sign::SignerProvider;
+use crate::sign::ecdsa::{EcdsaChannelSigner, WriteableEcdsaChannelSigner};
 use crate::sync::Mutex;
 use crate::util::logger::Logger;
 
@@ -263,8 +264,8 @@ pub enum BumpTransactionEvent {
 	/// an empty `pending_htlcs`), confirmation of the commitment transaction can be considered to
 	/// be not urgent.
 	///
-	/// [`EcdsaChannelSigner`]: crate::sign::EcdsaChannelSigner
-	/// [`EcdsaChannelSigner::sign_holder_anchor_input`]: crate::sign::EcdsaChannelSigner::sign_holder_anchor_input
+	/// [`EcdsaChannelSigner`]: crate::sign::ecdsa::EcdsaChannelSigner
+	/// [`EcdsaChannelSigner::sign_holder_anchor_input`]: crate::sign::ecdsa::EcdsaChannelSigner::sign_holder_anchor_input
 	/// [`build_anchor_input_witness`]: crate::ln::chan_utils::build_anchor_input_witness
 	ChannelClose {
 		/// The unique identifier for the claim of the anchor output in the commitment transaction.
@@ -317,8 +318,8 @@ pub enum BumpTransactionEvent {
 	/// longer able to commit external confirmed funds to the HTLC transaction or the fee committed
 	/// to the HTLC transaction is greater in value than the HTLCs being claimed.
 	///
-	/// [`EcdsaChannelSigner`]: crate::sign::EcdsaChannelSigner
-	/// [`EcdsaChannelSigner::sign_holder_htlc_transaction`]: crate::sign::EcdsaChannelSigner::sign_holder_htlc_transaction
+	/// [`EcdsaChannelSigner`]: crate::sign::ecdsa::EcdsaChannelSigner
+	/// [`EcdsaChannelSigner::sign_holder_htlc_transaction`]: crate::sign::ecdsa::EcdsaChannelSigner::sign_holder_htlc_transaction
 	/// [`HTLCDescriptor::tx_input_witness`]: HTLCDescriptor::tx_input_witness
 	HTLCResolution {
 		/// The unique identifier for the claim of the HTLCs in the confirmed commitment

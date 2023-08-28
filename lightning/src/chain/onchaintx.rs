@@ -30,7 +30,7 @@ use crate::ln::chan_utils::{self, ChannelTransactionParameters, HTLCOutputInComm
 use crate::chain::ClaimId;
 use crate::chain::chaininterface::{ConfirmationTarget, FeeEstimator, BroadcasterInterface, LowerBoundedFeeEstimator};
 use crate::chain::channelmonitor::{ANTI_REORG_DELAY, CLTV_SHARED_CLAIM_BUFFER};
-use crate::sign::WriteableEcdsaChannelSigner;
+use crate::sign::ecdsa::WriteableEcdsaChannelSigner;
 use crate::chain::package::{PackageSolvingData, PackageTemplate};
 use crate::util::logger::Logger;
 use crate::util::ser::{Readable, ReadableArgs, MaybeReadable, UpgradableRequired, Writer, Writeable, VecWriter};

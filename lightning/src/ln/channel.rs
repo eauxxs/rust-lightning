@@ -35,7 +35,8 @@ use crate::chain::BestBlock;
 use crate::chain::chaininterface::{FeeEstimator, ConfirmationTarget, LowerBoundedFeeEstimator};
 use crate::chain::channelmonitor::{ChannelMonitor, ChannelMonitorUpdate, ChannelMonitorUpdateStep, LATENCY_GRACE_PERIOD_BLOCKS, CLOSED_CHANNEL_UPDATE_ID};
 use crate::chain::transaction::{OutPoint, TransactionData};
-use crate::sign::{EcdsaChannelSigner, WriteableEcdsaChannelSigner, EntropySource, ChannelSigner, SignerProvider, NodeSigner, Recipient};
+use crate::sign::{EntropySource, ChannelSigner, SignerProvider, NodeSigner, Recipient};
+use crate::sign::ecdsa::{EcdsaChannelSigner, WriteableEcdsaChannelSigner};
 use crate::events::ClosureReason;
 use crate::routing::gossip::NodeId;
 use crate::util::ser::{Readable, ReadableArgs, Writeable, Writer, VecWriter};
@@ -8062,7 +8063,7 @@ mod tests {
 		use bitcoin::hashes::hex::FromHex;
 		use bitcoin::hash_types::Txid;
 		use bitcoin::secp256k1::Message;
-		use crate::sign::EcdsaChannelSigner;
+		use crate::sign::ecdsa::EcdsaChannelSigner;
 		use crate::ln::PaymentPreimage;
 		use crate::ln::channel::{HTLCOutputInCommitment ,TxCreationKeys};
 		use crate::ln::chan_utils::{ChannelPublicKeys, HolderCommitmentTransaction, CounterpartyChannelTransactionParameters};
